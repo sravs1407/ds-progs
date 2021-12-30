@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+        int co;
+        int ex;
+        struct node* next;
+}*newnode,*temp;
+struct node* head=NULL;
+struct node* tail=NULL;
+struct node* create(struct node *head)
+{
+        int e,c,n;
+        do{
+                newnode=(struct node*)malloc(sizeof(struct node));
+                printf("enter coeff");
+                scanf("%d",&c);
+                printf("enter exp");
+                scanf("%d",&e);
+                newnode->co=c;
+                newnode->ex=e;
+                newnode->next=NULL;
+                if(head==NULL)
+                {
+                        head=newnode;
+                        tail=newnode;
+                }
+                else
+                {
+                        tail->next=newnode;
+                        tail=newnode;
+                }
+                printf("\n1-continue 2-exit");
+                fflush(stdin);
+                scanf("%d",&n);
+        }while(n==1);
+        return head;
+}
+void display(struct node *head)
+{
+        temp=head;
+        printf("\n");
+        while(temp!=NULL)
+        {
+                printf("+%dx^%d",temp->co,temp->ex);
+                temp=temp->next;
+        }
+}
+void polyadd(struct node *head1,struct node *head2)
+{
+        struct node *temp1=head1;
+        struct node *temp2=head2;
+        printf("\n");
+        while(temp1!=NULL && temp2!=NULL)
+        {
+                if(temp1->ex==temp2->ex)
+                {
+                        printf("+%dx^%d",temp1->co+temp2->co,temp1->ex);
+                        temp1=temp1->next;
+                        temp2=temp2->next;
+                }
+                else if(temp1->ex>temp2->ex)
+                {
+                       printf("+%dx^%d",temp1->co,temp1->ex);
+                       temp1=temp1->next;
+                }
+                else
+                {
+                        printf("+%dx^%d",temp2->co,temp2->ex);
+                        temp2=temp2->next;
+                }
+        }
+        if(temp1!=NULL)
+        {
+                while(temp1!=NULL)
+                {
+                        printf("+%dx^%d",temp1->co,temp1->ex);
+                        temp1=temp1->next;
+                }
+        }
+        else
+        {
+                while(temp2!=NULL)
+                {
+                        printf("+%dx^%d",temp2->co,temp2->ex);
+                        temp2=temp2->next;
+                }
+        }
+}
+void main()
+{
+        struct node *head1=NULL,*head2=NULL,*temp1,*temp2;
+        temp1=create(head1);
+        temp2=create(head2);
+        display(temp1);
+        display(temp2);
+        polyadd(temp1,temp2);
+}
