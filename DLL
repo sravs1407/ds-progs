@@ -1,0 +1,130 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+        int data;
+        struct node *prev;
+        struct node *next;
+}*newnode,*temp;
+struct node *head=NULL;
+struct node *tail=NULL;
+void create()
+{
+        int value,n;
+        do{
+                newnode=(struct node*)malloc(sizeof(struct node));
+                printf("enter value");
+                scanf("%d",&value);
+                newnode->data=value;
+                newnode->prev=NULL;
+                newnode->next=NULL;
+                if(head==NULL)
+                {
+                head=newnode;
+                tail=newnode;
+                }
+                else
+                {
+                 tail->next=newnode;
+                  newnode->prev=tail;
+                 tail=newnode;
+                }
+               printf("1-continue 2-exit");
+               scanf("%d",&n);
+          }while(n==1);
+}
+void display()
+{
+        temp=head;
+        while(temp->next!=NULL)
+        {
+                printf("%d",temp->data);
+                temp=temp->next;
+        }
+        printf("%d",temp->data);
+}
+void insert()
+{
+        int value,pos,n,j;
+        newnode=(struct node*)malloc(sizeof(struct node));
+        printf("enter value");
+        scanf("%d",&value);
+        printf("1-insertion at beg 2-insertion at end 3-insertion at specific");
+        scanf("%d",&n);
+         if(n==1)
+        {
+                newnode->data=value;
+                newnode->prev=NULL;
+                head->next->prev=newnode;
+                newnode->next=head;
+                head=newnode;
+        }
+        else if(n==2)
+        {
+                newnode->data=value;
+                newnode->next=NULL;
+                newnode->prev=tail;
+                tail->next=newnode;
+                tail=newnode;
+        }
+        else
+        {
+                temp=head;
+                newnode->data=value;
+                printf("enter pos");
+                scanf("%d",&pos);
+                for(j=0;j<pos-1;j++)
+                {
+                        temp=temp->next;
+                }
+                newnode->next=temp->next;
+                temp->next->prev=newnode;
+                newnode->prev=temp;
+                temp->next=newnode;
+}
+void delete()
+{
+        int pos,n,i;
+        printf("1-deletion at beg 2-deletion at end 3-deletion at specific");
+        scanf("%d",&n);
+        if(n==1)
+        {
+                temp=head;
+                head=head->next;
+                head->prev=NULL;
+                temp->next=NULL;
+        }
+        else if(n==2)
+        {
+                temp=tail;
+                tail=tail->prev;
+                tail->next=NULL;
+                temp->prev=NULL;
+        }
+        else if(n==3)
+        {
+                temp=head;
+                 printf("enter pos");
+                scanf("%d",&pos);
+                for(i=0;i<pos;i++)
+                {
+                        temp=temp->next;
+                }
+                temp->prev->next=temp->next;
+                temp->next->prev=temp->prev;
+                free(temp);
+        }
+}
+void main()
+{
+        int n;
+        create();
+        printf("1-insertion 2-deletion");
+        printf("enter n value");
+        scanf("%d",&n);
+        if(n==1)
+          insert();
+        else if(n==2)
+          delete();
+        display();
+}
